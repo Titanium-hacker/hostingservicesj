@@ -17,10 +17,12 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [fullName, setFullName] = useState("");
   const [loading, setLoading] = useState(false);
+  const [infoMessage, setInfoMessage] = useState(""); // <-- message shown after signup
 
   const handleAuth = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
+    setInfoMessage("");
 
     try {
       if (isLogin) {
@@ -34,19 +36,25 @@ const Auth = () => {
         toast.success("Welcome back!");
         navigate("/dashboard");
       } else {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
             data: { full_name: fullName },
+            // Make sure this matches your redirect settings in Supabase
             emailRedirectTo: `${window.location.origin}/dashboard`,
           },
         });
 
         if (error) throw error;
 
-        toast.success("Account created! Redirecting to dashboard...");
-        navigate("/dashboard");
+        // Don't navigate to dashboard yet — user must confirm their email.
+        const userEmail = data?.user?.email || email;
+        const msg = `A confirmation email has been sent to ${userEmail}. Please check your inbox and click the confirmation link to activate your account and then login.`;
+        setInfoMessage(msg);
+        toast.success("Account created — check your email to confirm.");
+        // Optionally clear sensitive fields
+        setPassword("");
       }
     } catch (error: any) {
       toast.error(error.message || "Authentication failed");
@@ -72,6 +80,13 @@ const Auth = () => {
               {isLogin ? "Sign in to your account" : "Create your account"}
             </p>
           </div>
+
+          {/* Inline info message after signup */}
+          {infoMessage && (
+            <div className="mb-4 p-3 rounded-md bg-yellow-50 border border-yellow-200 text-yellow-800 text-sm">
+              {infoMessage}
+            </div>
+          )}
 
           <form onSubmit={handleAuth} className="space-y-4">
             {!isLogin && (
@@ -119,7 +134,10 @@ const Auth = () => {
 
           <div className="mt-6 text-center">
             <button
-              onClick={() => setIsLogin(!isLogin)}
+              onClick={() => {
+                setIsLogin(!isLogin);
+                setInfoMessage(""); // clear message when toggling mode
+              }}
               className="text-sm text-primary hover:underline"
             >
               {isLogin ? "Don't have an account? Sign up" : "Already have an account? Sign in"}
