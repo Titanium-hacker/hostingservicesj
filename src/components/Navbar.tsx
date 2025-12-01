@@ -38,7 +38,7 @@ const Navbar = () => {
               <div className="absolute inset-0 blur-xl bg-primary/20 -z-10 group-hover:bg-primary/40 transition-colors" />
             </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-neon-purple bg-clip-text text-transparent">
-              CloudByte Cloud
+              Quillcloud
             </span>
           </Link>
 

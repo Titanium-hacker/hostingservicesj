@@ -9,7 +9,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center gap-2">
               <Cloud className="w-6 h-6 text-primary" />
-              <span className="text-lg font-bold">CloudByte Cloud</span>
+              <span className="text-lg font-bold">Quillcloud</span>
             </div>
             <p className="text-sm text-muted-foreground">
               Fast, secure, developer-friendly cloud hosting. Deploy your projects instantly.
@@ -45,7 +45,7 @@ const Footer = () => {
         </div>
 
         <div className="mt-8 pt-8 border-t border-border/50 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} CloudByte Cloud. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Quillcloud. All rights reserved.</p>
           <p className="mt-2">We provide cloud hosting and web hosting services</p>
         </div>
       </div>
